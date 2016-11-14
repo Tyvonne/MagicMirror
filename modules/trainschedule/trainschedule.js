@@ -11,7 +11,6 @@ Module.register("trainschedule", {
     // Default module config.
     defaults: {
         text: "Hello World!",
-        train1: "05/11/2016 00:22",
         minutesRemainDelay: 20000,
         alarmRemainDelay: 3000,
 
@@ -38,19 +37,20 @@ Module.register("trainschedule", {
 
     // Override dom generator.
     getDom: function () {
-        var wrapper = document.createElement("div");
+        var wrapper = document.createElement("table");
+        wrapper.className = "small";
 
         var now = new Date();
         for (var ti = 0; ti < this.config.trains.length; ti++) {
 
-            var trainDate = this.config.trains[ti];
+            var trainDate = this.config.trains[ti].date;
             var child = null;
 
             //Manage empty and loading data
             if (trainDate === "") {
                 child = this.manageEmptyData();
             }
-                //Target date for current train
+            //Target date for current train
             else if (ti == 0) {
                 child = this.getTrainDate(now, trainDate, this.config.nextTrainText, this.config.nextDateText);
             } else {
@@ -65,6 +65,9 @@ Module.register("trainschedule", {
     },
 
     getTrainDate: function (now, targetDate, delayText, dateText) {
+
+
+
 
         //NOW
         //	    var year = now.getFullYear();
@@ -81,8 +84,22 @@ Module.register("trainschedule", {
         var targetMinute = targetDate.substring(14, 16);
         targetMinute = parseInt(targetMinute)
         var text = "";
-        var textWrapper = document.createElement("p");
-        textWrapper.className = "small";
+
+        var eventWrapper = document.createElement("tr");
+        eventWrapper.className = "normal";
+
+        if (this.config.displaySymbol) {
+            var symbolWrapper = document.createElement("td");
+            symbolWrapper.className = "symbol";
+            var symbol = document.createElement("span");
+            symbol.className = "fa fa-" + this.config.defaultSymbol;
+            symbolWrapper.appendChild(symbol);
+            eventWrapper.appendChild(symbolWrapper);
+        }
+
+
+        var textWrapper = document.createElement("td");
+        textWrapper.className = "title bright";
 
         targetMinute = targetMinute + (targetHour * 60);
         minutes = minutes + (hours * 60);
@@ -108,7 +125,8 @@ Module.register("trainschedule", {
         }
 
         textWrapper.innerHTML = text;
-        return textWrapper;
+        eventWrapper.appendChild(textWrapper);
+        return eventWrapper;
 
     },
     manageEmptyData: function () {
@@ -116,5 +134,5 @@ Module.register("trainschedule", {
         secondWrapper.innerHTML = (this.loaded) ? this.translate("EMPTY") : this.translate("LOADING");
         secondWrapper.className = "small dimmed";
         return secondWrapper;
-    }
+    },
 });
