@@ -24,7 +24,7 @@ var config = {
 }
 
 var req = new XMLHttpRequest();
-var url = "http://api.transilien.com/gare/"+stationFrom+"/depart/"+stationTo;
+var url = "http://api.transilien.com/gare/"+config.apiConfig.stationFrom+"/depart/"+config.apiConfig.stationTo;
 // Requête HTTP GET synchrone vers le serveur SNCF
 req.open("GET", url, false, config.apiConfig.APILogin, config.apiConfig.APIKey);
 req.send(null);
