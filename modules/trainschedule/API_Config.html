@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page de test</title>
+</head>
+<script>
+    var req = new XMLHttpRequest();
+    var url = "http://api.transilien.com/gare/87534131/depart/87384008"
+    // Requête HTTP GET synchrone vers le serveur SNCF
+    req.open("GET", url, true);
+    req.setRequestHeader("Authorization", "Basic dG5odG41MTg6WGM1RDMzY2U=")
+    req.setRequestHeader("Accept", "application/vnd.sncf.transilien.od.depart+xml;vers=1.0")
+    //req.setRequestHeader("Cache-Control", "no-cache")
+    //req.setRequestHeader("Content-Type", "application/vnd.sncf.transilien.od.depart+xml;vers=1")
+    //req.setRequestHeader("host", "api.transilien.com")
+    req.withCredentials = true
+    req.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                console.log("ça passe");
+            } else {
+                console.log("c'est de la merde");
+            }
+        }
+    };
+    req.send(null);
+
+</script>
+
+<body>
+    Test d'un cal dans une page HTml
+</body>
+
+</html>
